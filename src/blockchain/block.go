@@ -381,7 +381,7 @@ func (block *BlockOperation) GetReward(reqData model.BlockGetRewardRequest) mode
 	}
 }
 
-// getlatestreward
+// get latest reward
 func (block *BlockOperation) GetLatestReward() model.BlockGetLatestRewardResponse {
 	var resData model.BlockGetLatestRewardResponse
 	var resDataWeb model.WebBlockGetLatestRewardResponse
@@ -486,7 +486,7 @@ func (block *BlockOperation) GetFees(reqData model.BlockGetFeesRequest) model.Bl
 	}
 }
 
-// get latestfees
+// get latest fees
 func (block *BlockOperation) GetLatestFees() model.BlockGetLatestFeesResponse {
 	var resData model.BlockGetLatestFeesResponse
 	get := "/getLedger?"
