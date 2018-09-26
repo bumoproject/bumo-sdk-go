@@ -12,11 +12,13 @@ import (
 var testSdk sdk.Sdk
 
 type Atp10Metadata struct {
-	Version     string `json:"version"`
+	Code        string `json:"code"`
 	Name        string `json:"name"`
 	TotalSupply int64  `json:"total_supply"`
 	Decimals    int64  `json:"decimals"`
 	Description string `json:"description"`
+	Version     string `json:"version"`
+	Icon        string `json:"icon "`
 }
 
 //to initialize the SDK
@@ -41,15 +43,22 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
 	// The account address to send this transaction
 	var issuerAddresss string = "buQVU86Jm4FeRW4JcQTD9Rx9NkUkHikYGp6z"
 
+	// The apt token version
+	var version string = "1.0"
 	// The token code
 	var code string = "TXT"
+	// The token name
+	var name string = "TXT"
+	// The apt token icon
+	var icon string = ""
 	// The token total supply number
 	var totalSupply int64 = 0
 	// The token now supply number
 	var nowSupply int64 = 1000000000
-	// The token description
 	// The token decimals
 	var decimals int64 = 0
+
+	// The token description
 	var description string = "test unlimited issuance of apt1.0 token"
 	// The operation notes
 	var metadata string = "test the unlimited issuance of apt1.0 token"
@@ -62,12 +71,14 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
 
 	// If this is a atp 1.0 token, you must set transaction metadata like this
 	var atp10Metadata Atp10Metadata
-	atp10Metadata.Version = "1.0"
-	atp10Metadata.Name = code
+	atp10Metadata.Version = version
+	atp10Metadata.Code = code
+	atp10Metadata.Name = name
 	atp10Metadata.Decimals = decimals
 	atp10Metadata.TotalSupply = totalSupply
 	atp10Metadata.Description = description
-	metadataStr, err := json.Marshal(atp10Metadata)
+	atp10Metadata.Icon = icon
+	atp10MetadataJson, err := json.Marshal(atp10Metadata)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -79,10 +90,23 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
 	reqDataIssue.SetSourceAddress(issuerAddresss)
 	reqDataIssue.SetMetadata(metadata)
 
+	var key string = "asset_property_" + code
+	var value = string(atp10MetadataJson)
+	var reqDataSetMetadata model.AccountSetMetadataOperation
+	reqDataSetMetadata.Init()
+	reqDataSetMetadata.SetSourceAddress(issuerAddresss)
+	reqDataSetMetadata.SetKey(key)
+	reqDataSetMetadata.SetValue(value)
+	reqDataSetMetadata.SetMetadata(metadata)
+
+	var operations []model.BaseOperation
+	operations = append(operations, reqDataIssue)
+	operations = append(operations, reqDataSetMetadata)
+
 	// Record txhash for subsequent confirmation of the real result of the transaction.
 	// After recommending five blocks, call again through txhash Get the transaction information
 	// from the transaction Hash to confirm the final result of the transaction
-	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, reqDataIssue, issuerPrivateKey, issuerAddresss, nonce, gasPrice, feeLimit, string(metadataStr))
+	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, operations, issuerPrivateKey, issuerAddresss, nonce, gasPrice, feeLimit, string(atp10MetadataJson), metadata)
 	if errorCode != 0 {
 		t.Errorf(errorDesc)
 	} else {
@@ -100,15 +124,21 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 	// The account address to send this transaction
 	var issuerAddresss string = "buQVU86Jm4FeRW4JcQTD9Rx9NkUkHikYGp6z"
 
+	// The apt token version
+	var version string = "1.0"
 	// The token code
 	var code string = "TXT"
+	// The token name
+	var name string = "TXT"
+	// The apt token icon
+	var icon string = ""
 	// The token total supply number
-	var totalSupply int64 = 1000000000
+	var totalSupply int64 = 0
 	// The token now supply number
 	var nowSupply int64 = 1000000000
-	// The token description
 	// The token decimals
 	var decimals int64 = 0
+	// The token description
 	var description string = "test unlimited issuance of apt1.0 token"
 	// The operation notes
 	var metadata string = "test the unlimited issuance of apt1.0 token"
@@ -121,12 +151,14 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 
 	// If this is a atp 1.0 token, you must set transaction metadata like this
 	var atp10Metadata Atp10Metadata
-	atp10Metadata.Version = "1.0"
-	atp10Metadata.Name = code
+	atp10Metadata.Version = version
+	atp10Metadata.Code = code
+	atp10Metadata.Name = name
 	atp10Metadata.Decimals = decimals
 	atp10Metadata.TotalSupply = totalSupply
 	atp10Metadata.Description = description
-	metadataStr, err := json.Marshal(atp10Metadata)
+	atp10Metadata.Icon = icon
+	atp10MetadataJson, err := json.Marshal(atp10Metadata)
 	if err != nil {
 		t.Errorf(err.Error())
 	}
@@ -138,10 +170,23 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 	reqDataIssue.SetSourceAddress(issuerAddresss)
 	reqDataIssue.SetMetadata(metadata)
 
+	var key string = "asset_property_" + code
+	var value = string(atp10MetadataJson)
+	var reqDataSetMetadata model.AccountSetMetadataOperation
+	reqDataSetMetadata.Init()
+	reqDataSetMetadata.SetSourceAddress(issuerAddresss)
+	reqDataSetMetadata.SetKey(key)
+	reqDataSetMetadata.SetValue(value)
+	reqDataSetMetadata.SetMetadata(metadata)
+
+	var operations []model.BaseOperation
+	operations = append(operations, reqDataIssue)
+	operations = append(operations, reqDataSetMetadata)
+
 	// Record txhash for subsequent confirmation of the real result of the transaction.
 	// After recommending five blocks, call again through txhash Get the transaction information
 	// from the transaction Hash to confirm the final result of the transaction
-	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, reqDataIssue, issuerPrivateKey, issuerAddresss, nonce, gasPrice, feeLimit, string(metadataStr))
+	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, operations, issuerPrivateKey, issuerAddresss, nonce, gasPrice, feeLimit, string(atp10MetadataJson), metadata)
 	if errorCode != 0 {
 		t.Errorf(errorDesc)
 	} else {
@@ -170,10 +215,19 @@ func Test_sendAtp10Token(t *testing.T) {
 	// The fixed write 1000L, the unit is MO
 	var gasPrice int64 = 1000
 	// Set up the maximum cost 0.01BU
-	var feeLimit int64 = 5003000000
+	var feeLimit int64 = 1000000
 	// Transaction initiation account's Nonce + 1
 	var nonce int64 = 10
 
+	var operations []model.BaseOperation
+
+	//  Check whether the destination account is activated
+	var reqDataCheckActivated model.AccountCheckActivatedRequest
+	reqDataCheckActivated.SetAddress(destAddress)
+	if testSdk.Account.CheckActivated(reqDataCheckActivated).Result.IsActivated {
+		t.Errorf("destAddress not activated")
+		return
+	}
 	// Build asset operation
 	var reqDataIssue model.AssetSendOperation
 	reqDataIssue.Init()
@@ -184,10 +238,12 @@ func Test_sendAtp10Token(t *testing.T) {
 	reqDataIssue.SetSourceAddress(senderAddresss)
 	reqDataIssue.SetMetadata(metadata)
 
+	operations = append(operations, reqDataIssue)
+
 	// Record txhash for subsequent confirmation of the real result of the transaction.
 	// After recommending five blocks, call again through txhash Get the transaction information
 	// from the transaction Hash to confirm the final result of the transaction
-	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, reqDataIssue, senderPrivateKey, senderAddresss, nonce, gasPrice, feeLimit, "")
+	errorCode, errorDesc, hash := atp10BlobSubmit(testSdk, operations, senderPrivateKey, senderAddresss, nonce, gasPrice, feeLimit, "", metadata)
 	if errorCode != 0 {
 		t.Errorf(errorDesc)
 	} else {
@@ -195,7 +251,7 @@ func Test_sendAtp10Token(t *testing.T) {
 	}
 }
 
-func atp10BlobSubmit(testSdk sdk.Sdk, reqDataOperation model.BaseOperation, senderPrivateKey string, senderAddresss string, senderNonce int64, gasPrice int64, feeLimit int64, transMetadata string) (errorCode int, errorDesc string, hash string) {
+func atp10BlobSubmit(testSdk sdk.Sdk, operations []model.BaseOperation, senderPrivateKey string, senderAddresss string, senderNonce int64, gasPrice int64, feeLimit int64, transMetadata string, metadata string) (errorCode int, errorDesc string, hash string) {
 	//Blob
 	var reqDataBlob model.TransactionBuildBlobRequest
 	reqDataBlob.SetSourceAddress(senderAddresss)
@@ -203,7 +259,10 @@ func atp10BlobSubmit(testSdk sdk.Sdk, reqDataOperation model.BaseOperation, send
 	reqDataBlob.SetGasPrice(gasPrice)
 	reqDataBlob.SetNonce(senderNonce)
 	reqDataBlob.SetMetadata(transMetadata)
-	reqDataBlob.SetOperation(reqDataOperation)
+	for i := range operations {
+		reqDataBlob.AddOperation(operations[i])
+	}
+
 	resDataBlob := testSdk.Transaction.BuildBlob(reqDataBlob)
 	if resDataBlob.ErrorCode != 0 {
 		return resDataBlob.ErrorCode, resDataBlob.ErrorDesc, ""

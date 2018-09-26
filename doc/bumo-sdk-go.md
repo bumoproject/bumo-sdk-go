@@ -1255,7 +1255,7 @@ Amount	|	int64	|	资产数量
 成员	|	 类型	|	描述	|
 -----------|------------|----------------
 DestAddress	|	string	|	待转移的目标账户地址
-Asset	|	[AssetInfo](#assetinfo)	|	账户资产
+Asset	|	[Asset](#asset)	|	账户资产
 Input	|	string	|	合约main函数入参
 
 #### PayCoin
