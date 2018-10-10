@@ -239,7 +239,7 @@ func GetOperations(operationsList list.List, url string, sourceAddress string) (
 	return operations, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//activate the account 1
+//activate the account
 func Activate(reqData model.AccountActivateOperation, url string) model.AccountActivateResponse {
 	var resData model.AccountActivateResponse
 	if reqData.GetSourceAddress() != "" {
@@ -286,7 +286,7 @@ func Activate(reqData model.AccountActivateOperation, url string) model.AccountA
 
 }
 
-//set metadata 2
+//set metadata
 func SetMetadata(reqData model.AccountSetMetadataOperation) model.AccountSetMetadataResponse {
 	var resData model.AccountSetMetadataResponse
 	if reqData.GetSourceAddress() != "" {
@@ -332,7 +332,7 @@ func SetMetadata(reqData model.AccountSetMetadataOperation) model.AccountSetMeta
 	return resData
 }
 
-//set privilege 3
+//set privilege
 func SetPrivilege(reqData model.AccountSetPrivilegeOperation) model.AccountSetPrivilegeResponse {
 	var resData model.AccountSetPrivilegeResponse
 	if reqData.GetSourceAddress() != "" {
@@ -418,7 +418,7 @@ func SetPrivilege(reqData model.AccountSetPrivilegeOperation) model.AccountSetPr
 	return resData
 }
 
-//asset issue 4
+//asset issue
 func AssetIssue(reqData model.AssetIssueOperation) model.AssetIssueResponse {
 	var resData model.AssetIssueResponse
 	if reqData.GetSourceAddress() != "" {
@@ -454,7 +454,7 @@ func AssetIssue(reqData model.AssetIssueOperation) model.AssetIssueResponse {
 	return resData
 }
 
-//asset send 5
+//asset send
 func AssetSend(reqData model.AssetSendOperation) model.AssetSendResponse {
 	var resData model.AssetSendResponse
 	if !keypair.CheckAddress(reqData.GetIssuer()) {
@@ -501,7 +501,7 @@ func AssetSend(reqData model.AssetSendOperation) model.AssetSendResponse {
 	return resData
 }
 
-//bu send 6
+//bu send
 func BUSend(reqData model.BUSendOperation) model.BUSendResponse {
 	var resData model.BUSendResponse
 	if reqData.GetAmount() < 0 {
@@ -537,7 +537,7 @@ func BUSend(reqData model.BUSendOperation) model.BUSendResponse {
 	return resData
 }
 
-//Ctp10token 7
+//Ctp10token
 func Ctp10TokenIssue(reqData model.Ctp10TokenIssueOperation) model.Ctp10TokenIssueResponse {
 	var resData model.Ctp10TokenIssueResponse
 	if reqData.GetSourceAddress() != "" {
@@ -607,7 +607,7 @@ func Ctp10TokenIssue(reqData model.Ctp10TokenIssueOperation) model.Ctp10TokenIss
 	return resData
 }
 
-//Ctp10token 8
+//Ctp10token
 func Transfer(reqData model.Ctp10TokenTransferOperation) model.Ctp10TokenTransferResponse {
 	var resData model.Ctp10TokenTransferResponse
 	if !keypair.CheckAddress(reqData.GetDestAddress()) {
@@ -657,7 +657,7 @@ func Transfer(reqData model.Ctp10TokenTransferOperation) model.Ctp10TokenTransfe
 	return resData
 }
 
-//Ctp10token 9
+//Ctp10token
 func TransferFrom(reqData model.Ctp10TokenTransferFromOperation) model.Ctp10TokenTransferFromResponse {
 	var resData model.Ctp10TokenTransferFromResponse
 	if !keypair.CheckAddress(reqData.GetDestAddress()) {
@@ -708,7 +708,7 @@ func TransferFrom(reqData model.Ctp10TokenTransferFromOperation) model.Ctp10Toke
 	return resData
 }
 
-//Ctp10token 10
+//Ctp10token
 func Approve(reqData model.Ctp10TokenApproveOperation) model.Ctp10TokenApproveResponse {
 	var resData model.Ctp10TokenApproveResponse
 	if !keypair.CheckAddress(reqData.GetSpender()) {
@@ -753,7 +753,7 @@ func Approve(reqData model.Ctp10TokenApproveOperation) model.Ctp10TokenApproveRe
 	return resData
 }
 
-//Ctp10token 11
+//Ctp10token
 func Assign(reqData model.Ctp10TokenAssignOperation) model.Ctp10TokenAssignResponse {
 	var resData model.Ctp10TokenAssignResponse
 	if !keypair.CheckAddress(reqData.GetDestAddress()) {
@@ -809,7 +809,7 @@ func Assign(reqData model.Ctp10TokenAssignOperation) model.Ctp10TokenAssignRespo
 	return resData
 }
 
-//Ctp10token 12
+//Ctp10token
 func ChangeOwner(reqData model.Ctp10TokenChangeOwnerOperation) model.Ctp10TokenChangeOwnerResponse {
 	var resData model.Ctp10TokenChangeOwnerResponse
 	if !keypair.CheckAddress(reqData.GetTokenOwner()) {
@@ -853,7 +853,7 @@ func ChangeOwner(reqData model.Ctp10TokenChangeOwnerOperation) model.Ctp10TokenC
 	return resData
 }
 
-//contract create 13
+//contract create
 func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateResponse {
 	var resData model.ContractCreateResponse
 	if reqData.GetSourceAddress() != "" {
@@ -900,7 +900,7 @@ func ContractCreate(reqData model.ContractCreateOperation) model.ContractCreateR
 	return resData
 }
 
-//invoke by asset 14
+//invoke by asset
 func InvokeByAsset(reqData model.ContractInvokeByAssetOperation) model.ContractInvokeByBUResponse {
 	var resData model.ContractInvokeByBUResponse
 	if reqData.GetSourceAddress() != "" {
@@ -969,7 +969,7 @@ func InvokeByAsset(reqData model.ContractInvokeByAssetOperation) model.ContractI
 	return resData
 }
 
-//invoke by bu 15
+//invoke by bu
 func InvokeByBU(reqData model.ContractInvokeByBUOperation) model.ContractInvokeByBUResponse {
 	var resData model.ContractInvokeByBUResponse
 	if reqData.GetSourceAddress() != "" {
@@ -1011,7 +1011,7 @@ func InvokeByBU(reqData model.ContractInvokeByBUOperation) model.ContractInvokeB
 	return resData
 }
 
-//log create 16
+//log create
 func LogCreate(reqData model.LogCreateOperation) model.LogCreateResponse {
 	var resData model.LogCreateResponse
 	if reqData.GetSourceAddress() != "" {
