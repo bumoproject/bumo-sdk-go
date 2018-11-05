@@ -1232,7 +1232,7 @@ InitInput	|	string	|	合约init函数的入参
 
 成员	|	 类型	|	描述	|
 -----------|------------|----------------
-Type	|	int64	|	约的语种，默认不赋值
+Type	|	int64	|	合约的语种，默认不赋值
 Payload	|	string	|	对应语种的合约代码
 
 #### Metadata
