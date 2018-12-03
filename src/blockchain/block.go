@@ -12,14 +12,13 @@ import (
 )
 
 type BlockOperation struct {
-	Url string
 }
 
 // get number
 func (block *BlockOperation) GetNumber() model.BlockGetNumberResponse {
 	var resData model.BlockGetNumberResponse
 	get := "/getLedger"
-	response, SDKRes := common.GetRequest(block.Url, get, "")
+	response, SDKRes := common.GetRequest(get, "")
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -58,7 +57,8 @@ func (block *BlockOperation) CheckStatus() model.BlockCheckStatusResponse {
 	var resData model.BlockCheckStatusResponse
 	resData.Result.IsSynchronous = false
 	get := "/getModulesStatus"
-	response, SDKRes := common.GetRequest(block.Url, get, "")
+
+	response, SDKRes := common.GetRequest(get, "")
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -104,7 +104,8 @@ func (block *BlockOperation) GetTransactions(reqData model.BlockGetTransactionRe
 	}
 	bnstr := strconv.FormatInt(reqData.GetBlockNumber(), 10)
 	get := "/getTransactionHistory?ledger_seq="
-	response, SDKRes := common.GetRequest(block.Url, get, bnstr)
+
+	response, SDKRes := common.GetRequest(get, bnstr)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -150,7 +151,8 @@ func (block *BlockOperation) GetInfo(reqData model.BlockGetInfoRequest) model.Bl
 	}
 	str := strconv.FormatInt(reqData.GetBlockNumber(), 10)
 	get := "/getLedger?seq="
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -189,7 +191,8 @@ func (block *BlockOperation) GetInfo(reqData model.BlockGetInfoRequest) model.Bl
 func (block *BlockOperation) GetLatest() model.BlockGetLatestResponse {
 	var resData model.BlockGetLatestResponse
 	get := "/getLedger"
-	response, SDKRes := common.GetRequest(block.Url, get, "")
+
+	response, SDKRes := common.GetRequest(get, "")
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -239,7 +242,8 @@ func (block *BlockOperation) GetValidators(reqData model.BlockGetValidatorsReque
 	buf.WriteString(bnstr)
 	buf.WriteString("&with_validator=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode
@@ -283,7 +287,8 @@ func (block *BlockOperation) GetLatestValidators() model.BlockGetLatestValidator
 	var buf bytes.Buffer
 	buf.WriteString("with_validator=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode
@@ -336,7 +341,8 @@ func (block *BlockOperation) GetReward(reqData model.BlockGetRewardRequest) mode
 	buf.WriteString(bnstr)
 	buf.WriteString("&with_block_reward=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode
@@ -389,7 +395,8 @@ func (block *BlockOperation) GetLatestReward() model.BlockGetLatestRewardRespons
 	var buf bytes.Buffer
 	buf.WriteString("with_block_reward=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode
@@ -449,7 +456,8 @@ func (block *BlockOperation) GetFees(reqData model.BlockGetFeesRequest) model.Bl
 	buf.WriteString(bnstr)
 	buf.WriteString("&with_fee=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode
@@ -493,7 +501,8 @@ func (block *BlockOperation) GetLatestFees() model.BlockGetLatestFeesResponse {
 	var buf bytes.Buffer
 	buf.WriteString("with_fee=true")
 	str := buf.String()
-	response, SDKRes := common.GetRequest(block.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		resData.ErrorCode = SDKRes.ErrorCode

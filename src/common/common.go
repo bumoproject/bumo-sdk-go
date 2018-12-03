@@ -3,41 +3,96 @@ package common
 
 import (
 	"bytes"
+	"crypto/tls"
 	"encoding/json"
+	"net"
 	"net/http"
 	"net/url"
 	"strconv"
+	"sync"
+	"time"
 
 	"github.com/bumoproject/bumo-sdk-go/src/crypto/keypair"
 	"github.com/bumoproject/bumo-sdk-go/src/exception"
 	"github.com/bumoproject/bumo-sdk-go/src/model"
 )
 
+type common struct {
+	Url              string
+	ConnectTimeout   int64
+	ReadWriteTimeout int64
+	ChainId          int64
+}
+
+var ins *common
+var once sync.Once
+
+func GetIns() *common {
+	once.Do(func() {
+		ins = &common{}
+	})
+	return ins
+}
+func GetChainId() int64 {
+	return ins.ChainId
+}
+func TimeoutDialer(cTimeout time.Duration, rwTimeout time.Duration) func(net, addr string) (c net.Conn, err error) {
+	return func(netw, addr string) (net.Conn, error) {
+		conn, err := net.DialTimeout(netw, addr, cTimeout)
+		if err != nil {
+			return nil, err
+		}
+		conn.SetDeadline(time.Now().Add(rwTimeout))
+		return conn, nil
+	}
+}
+
 //http get
-func GetRequest(strUrl string, get string, str string) (*http.Response, exception.SDKResponse) {
+func GetRequest(get string, str string) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
-	buf.WriteString(strUrl)
+	connectTimeout := time.Duration(ins.ConnectTimeout) * time.Second
+	readWriteTimeout := time.Duration(ins.ReadWriteTimeout) * time.Second
+	buf.WriteString(ins.Url)
 	buf.WriteString(get)
 	buf.WriteString(url.PathEscape(str))
-	strUrl = buf.String()
-	client := &http.Client{}
-	newRequest, err := http.NewRequest("GET", strUrl, nil)
-	if err != nil {
-		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+	strUrl := buf.String()
+	if connectTimeout != 0 || readWriteTimeout != 0 {
+		client := &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				Dial:            TimeoutDialer(connectTimeout, readWriteTimeout),
+			},
+		}
+		newRequest, err := http.NewRequest("GET", strUrl, nil)
+		if err != nil {
+			return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+		}
+		response, err := client.Do(newRequest)
+		if err != nil {
+			return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+		}
+		return response, exception.GetSDKRes(exception.SUCCESS)
+	} else {
+		client := &http.Client{}
+		newRequest, err := http.NewRequest("GET", strUrl, nil)
+		if err != nil {
+			return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+		}
+		response, err := client.Do(newRequest)
+		if err != nil {
+			return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+		}
+		return response, exception.GetSDKRes(exception.SUCCESS)
 	}
-	response, err := client.Do(newRequest)
-	if err != nil {
-		return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
-	}
-	return response, exception.GetSDKRes(exception.SUCCESS)
+
 }
 
 //http post
-func PostRequest(strUrl string, post string, data []byte) (*http.Response, exception.SDKResponse) {
+func PostRequest(post string, data []byte) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
-	buf.WriteString(strUrl)
+	buf.WriteString(ins.Url)
 	buf.WriteString(post)
-	strUrl = buf.String()
+	strUrl := buf.String()
 	client := &http.Client{}
 	newRequest, err := http.NewRequest("POST", strUrl, bytes.NewReader(data))
 	if err != nil {
@@ -68,9 +123,9 @@ func GetRequestJson(reqData model.TransactionSubmitRequests) ([]byte, exception.
 }
 
 //获取最新fees
-func GetLatestFees(url string) (int64, int64, exception.SDKResponse) {
+func GetLatestFees() (int64, int64, exception.SDKResponse) {
 	get := "/getLedger?with_fee=true"
-	response, SDKRes := GetRequest(url, get, "")
+	response, SDKRes := GetRequest(get, "")
 	if SDKRes.ErrorCode != 0 {
 		return 0, 0, SDKRes
 	}
@@ -118,7 +173,7 @@ func GetLatestFees(url string) (int64, int64, exception.SDKResponse) {
 	}
 }
 
-func GetCallDataStr(funcstr string, ContractAddress string, TokenOwner string) (string, exception.SDKResponse) {
+func GetCallDataStr(funcStr string, ContractAddress string, TokenOwner string) (string, exception.SDKResponse) {
 	if !keypair.CheckAddress(ContractAddress) {
 		return "", exception.GetSDKRes(exception.INVALID_CONTRACTADDRESS_ERROR)
 	}
@@ -128,7 +183,7 @@ func GetCallDataStr(funcstr string, ContractAddress string, TokenOwner string) (
 		}
 	}
 	var Input model.Input
-	Input.Method = funcstr
+	Input.Method = funcStr
 	Input.Params.Address = TokenOwner
 	InputStr, err := json.Marshal(Input)
 	if err != nil {
@@ -146,12 +201,12 @@ func GetCallDataStr(funcstr string, ContractAddress string, TokenOwner string) (
 
 }
 
-func CheckActivated(address string, url string) (bool, exception.SDKResponse) {
+func CheckActivated(address string) (bool, exception.SDKResponse) {
 	var resData model.AccountGetInfoResponse
 	if !keypair.CheckAddress(address) {
 		return false, exception.GetSDKRes(exception.INVALID_ADDRESS_ERROR)
 	}
-	response, SDKRes := GetRequest(url, "/getAccount?address=", address)
+	response, SDKRes := GetRequest("/getAccount?address=", address)
 	if SDKRes.ErrorCode != 0 {
 		return false, SDKRes
 	}

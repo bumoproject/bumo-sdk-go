@@ -3,6 +3,7 @@ package sdk_test
 
 import (
 	"encoding/json"
+
 	"testing"
 
 	"github.com/bumoproject/bumo-sdk-go/src/model"
@@ -14,7 +15,8 @@ var testSdk sdk.Sdk
 //init
 func Test_Init(t *testing.T) {
 	var reqData model.SDKInitRequest
-	reqData.SetUrl("http://seed1.bumotest.io:26002")
+	reqData.SetUrl("http://127.0.0.1:36002")
+	reqData.SetChainId(1)
 	resData := testSdk.Init(reqData)
 	if resData.ErrorCode != 0 {
 		t.Errorf(resData.ErrorDesc)
@@ -25,6 +27,7 @@ func Test_Init(t *testing.T) {
 
 //get block number
 func Test_Block_GetNumber(t *testing.T) {
+
 	resData := testSdk.Block.GetNumber()
 	if resData.ErrorCode != 0 {
 		t.Errorf(resData.ErrorDesc)

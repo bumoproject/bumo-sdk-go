@@ -504,7 +504,10 @@ func (reqData *Ctp10TokenGetBalanceRequest) GetTokenOwner() string {
 }
 
 type SDKInitRequest struct {
-	url string
+	url              string
+	chainId          int64
+	connectTimeout   int64
+	readWriteTimeout int64
 }
 
 func (reqData *SDKInitRequest) SetUrl(Url string) {
@@ -512,6 +515,24 @@ func (reqData *SDKInitRequest) SetUrl(Url string) {
 }
 func (reqData *SDKInitRequest) GetUrl() string {
 	return reqData.url
+}
+func (reqData *SDKInitRequest) SetChainId(ChainId int64) {
+	reqData.chainId = ChainId
+}
+func (reqData *SDKInitRequest) GetChainId() int64 {
+	return reqData.chainId
+}
+func (reqData *SDKInitRequest) SetReadWriteTimeout(ReadWriteTimeout int64) {
+	reqData.readWriteTimeout = ReadWriteTimeout
+}
+func (reqData *SDKInitRequest) GetReadWriteTimeout() int64 {
+	return reqData.readWriteTimeout
+}
+func (reqData *SDKInitRequest) SetConnectTimeout(ConnectTimeout int64) {
+	reqData.connectTimeout = ConnectTimeout
+}
+func (reqData *SDKInitRequest) GetConnectTimeout() int64 {
+	return reqData.connectTimeout
 }
 
 //TransactionBuildBlob

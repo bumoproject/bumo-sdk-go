@@ -390,6 +390,7 @@ type Transaction struct {
 	FeeLimit      int64       `json:"fee_limit"`
 	Metadata      string      `json:"metadata"`
 	Operations    []Operation `json:"operations"`
+	ChainId       int64       `json:"chain_id"`
 }
 type Operation struct {
 	SourceAddress string        `json:"source_address"`

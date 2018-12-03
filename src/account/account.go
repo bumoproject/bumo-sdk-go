@@ -12,7 +12,6 @@ import (
 )
 
 type AccountOperation struct {
-	Url string
 }
 
 // Check the validity of the address
@@ -39,13 +38,14 @@ func (account *AccountOperation) Create() model.AccountCreateResponse {
 
 // Get account info
 func (account *AccountOperation) GetInfo(reqData model.AccountGetInfoRequest) model.AccountGetInfoResponse {
+
 	var resData model.AccountGetInfoResponse
 	if !keypair.CheckAddress(reqData.GetAddress()) {
 		resData.ErrorCode = exception.INVALID_ADDRESS_ERROR
 		resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
 		return resData
 	}
-	response, SDKRes := common.GetRequest(account.Url, "/getAccount?address=", reqData.GetAddress())
+	response, SDKRes := common.GetRequest("/getAccount?address=", reqData.GetAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -87,7 +87,8 @@ func (account *AccountOperation) GetNonce(reqData model.AccountGetNonceRequest) 
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-	response, SDKRes := common.GetRequest(account.Url, "/getAccount?address=", reqData.GetAddress())
+
+	response, SDKRes := common.GetRequest("/getAccount?address=", reqData.GetAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -133,7 +134,8 @@ func (account *AccountOperation) GetBalance(reqData model.AccountGetBalanceReque
 		return resData
 	}
 	get := "/getAccount?address="
-	response, SDKRes := common.GetRequest(account.Url, get, reqData.GetAddress())
+
+	response, SDKRes := common.GetRequest(get, reqData.GetAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -178,7 +180,8 @@ func (account *AccountOperation) GetAssets(reqData model.AccountGetAssetsRequest
 		return resData
 	}
 	get := "/getAccount?address="
-	response, SDKRes := common.GetRequest(account.Url, get, reqData.GetAddress())
+
+	response, SDKRes := common.GetRequest(get, reqData.GetAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -237,7 +240,8 @@ func (account *AccountOperation) GetMetadata(reqData model.AccountGetMetadataReq
 	buf.WriteString("&key=")
 	buf.WriteString(reqData.GetKey())
 	str := buf.String()
-	response, SDKRes := common.GetRequest(account.Url, get, str)
+
+	response, SDKRes := common.GetRequest(get, str)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc

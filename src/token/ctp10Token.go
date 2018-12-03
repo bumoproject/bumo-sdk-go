@@ -20,9 +20,7 @@ type Ctp10TokenOperation struct {
 //Check Valid
 func (Ctp10Token *Ctp10TokenOperation) CheckValid(reqData model.Ctp10TokenCheckValidRequest) model.Ctp10TokenCheckValidResponse {
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
 	var Account account.AccountOperation
-	Account.Url = Ctp10Token.Url
 	var resData model.Ctp10TokenCheckValidResponse
 	resData.Result.IsValid = false
 	var raqDataCheck model.ContractCheckValidRequest
@@ -136,7 +134,7 @@ func (Ctp10Token *Ctp10TokenOperation) Allowance(reqData model.Ctp10TokenAllowan
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -195,7 +193,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetInfo(reqData model.Ctp10TokenGetInfoRe
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -255,7 +253,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetName(reqData model.Ctp10TokenGetNameRe
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -308,7 +306,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetSymbol(reqData model.Ctp10TokenGetSymb
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -360,7 +358,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetDecimals(reqData model.Ctp10TokenGetDe
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -418,7 +416,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetTotalSupply(reqData model.Ctp10TokenGe
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)
@@ -481,7 +479,7 @@ func (Ctp10Token *Ctp10TokenOperation) GetBalance(reqData model.Ctp10TokenGetBal
 		return resData
 	}
 	var Contract contract.ContractOperation
-	Contract.Url = Ctp10Token.Url
+
 	var reqDataCall model.ContractCallRequest
 	reqDataCall.SetContractAddress("buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG")
 	reqDataCall.SetOptType(2)

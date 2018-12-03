@@ -18,7 +18,7 @@ const (
 )
 
 //GetOperations
-func GetOperations(operationsList list.List, url string, sourceAddress string) ([]*protocol.Operation, exception.SDKResponse) {
+func GetOperations(operationsList list.List, sourceAddress string) ([]*protocol.Operation, exception.SDKResponse) {
 	var operations []*protocol.Operation
 	for e := operationsList.Front(); e != nil; e = e.Next() {
 		operationsData, ok := e.Value.(model.BaseOperation)
@@ -36,7 +36,7 @@ func GetOperations(operationsList list.List, url string, sourceAddress string) (
 			if operationsReqData.GetDestAddress() == sourceAddress && sourceAddress != "" {
 				return operations, exception.GetSDKRes(exception.SOURCEADDRESS_EQUAL_DESTADDRESS_ERROR)
 			}
-			operationsResData := Activate(operationsReqData, url)
+			operationsResData := Activate(operationsReqData)
 			if operationsResData.ErrorCode != 0 {
 				return operations, exception.GetSDKRes(operationsResData.ErrorCode)
 			}
@@ -240,7 +240,7 @@ func GetOperations(operationsList list.List, url string, sourceAddress string) (
 }
 
 //activate the account
-func Activate(reqData model.AccountActivateOperation, url string) model.AccountActivateResponse {
+func Activate(reqData model.AccountActivateOperation) model.AccountActivateResponse {
 	var resData model.AccountActivateResponse
 	if reqData.GetSourceAddress() != "" {
 		if !keypair.CheckAddress(reqData.GetSourceAddress()) {
