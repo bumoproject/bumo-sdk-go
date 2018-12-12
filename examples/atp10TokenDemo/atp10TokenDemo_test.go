@@ -18,7 +18,7 @@ type Atp10Metadata struct {
 	Decimals    int64  `json:"decimals"`
 	Description string `json:"description"`
 	Version     string `json:"version"`
-	Icon        string `json:"icon "`
+	Icon        string `json:"icon"`
 }
 
 //to initialize the SDK
