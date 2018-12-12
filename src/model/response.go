@@ -282,6 +282,7 @@ type TransactionJson struct {
 	Nonce         int64              `json:"nonce"`
 	CeilLedgerSeq int64              `json:"ceil_ledger_seq"`
 	Operations    []OperationEvaluat `json:"operations"`
+	ChainId       int64              `json:"chain_id"`
 }
 type OperationEvaluat struct {
 	Type          protocol.Operation_Type `protobuf:"varint,1,opt,name=type,enum=protocol.Operation_Type" json:"type,omitempty"`

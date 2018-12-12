@@ -14,7 +14,7 @@ var testSdk sdk.Sdk
 type Atp10Metadata struct {
 	Code        string `json:"code"`
 	Name        string `json:"name"`
-	TotalSupply int64  `json:"total_supply"`
+	TotalSupply int64  `json:"totalSupply"`
 	Decimals    int64  `json:"decimals"`
 	Description string `json:"description"`
 	Version     string `json:"version"`

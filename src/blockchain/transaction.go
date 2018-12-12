@@ -17,7 +17,6 @@ import (
 )
 
 type TransactionOperation struct {
-	ChainId int64
 }
 
 // build blob
@@ -203,6 +202,7 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 					Nonce:         reqData.GetNonce(),
 					CeilLedgerSeq: seq,
 					Operations:    Operations,
+					ChainId:       common.GetChainId(),
 				},
 				SignatureNumber: SignatureNumber,
 			},
