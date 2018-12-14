@@ -3,8 +3,10 @@ package atp10TokenDemo_test
 
 import (
 	"encoding/json"
+	"strconv"
 	"testing"
 
+	"github.com/bumoproject/bumo-sdk-go/src/common"
 	"github.com/bumoproject/bumo-sdk-go/src/model"
 	"github.com/bumoproject/bumo-sdk-go/src/sdk"
 )
@@ -39,25 +41,25 @@ func Test_Init(t *testing.T) {
  */
 func Test_issueUnlimitedAtp10Token(t *testing.T) {
 	// The account private key to issue atp1.0 token
-	var issuerPrivateKey string = "privbtYzJ6miiFktK9BsDAMRNd3J4eKkuszfXqJ2huQ2h8DGUnRs9nuq"
+	var issuerPrivateKey string = "privbvCDPhjNmXdZD2p6RWfXhTC3qzpn8REtZtPSu64mMQDMxAJ3f1hu"
 	// The account address to send this transaction
-	var issuerAddresss string = "buQVU86Jm4FeRW4JcQTD9Rx9NkUkHikYGp6z"
+	var issuerAddresss string = "buQtjhgK9SakQPYGzoZ3iHodfRvd8qTGoaYd"
 
 	// The apt token version
 	var version string = "1.0"
 	// The token code
-	var code string = "TXT"
+	var code string = "test"
 	// The token name
-	var name string = "TXT"
+	var name string = "TEST"
 	// The apt token icon
 	var icon string = ""
-	// The token total supply number
-	var totalSupply int64 = 0
-	// The token now supply number
-	var nowSupply int64 = 1000000000
 	// The token decimals
-	var decimals int64 = 0
-
+	var decimals int64 = 2
+	// The token total supply number, which includes the decimals.
+	var totalSupply int64 = 0
+	// The token now supply number, which includes the dicimals.
+	// If decimals is 8 and you want to issue 10 tokens now, the nowSupply must be 10 * 10 ^ 8, like below.
+	var nowSupply string = common.UnitWithDecimals("10", 8)
 	// The token description
 	var description string = "test unlimited issuance of apt1.0 token"
 	// The operation notes
@@ -67,7 +69,7 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
 	// Set up the maximum cost 0.01BU
 	var feeLimit int64 = 5003000000
 	// Transaction initiation account's Nonce + 1
-	var nonce int64 = 10
+	var nonce int64 = 5
 
 	// If this is a atp 1.0 token, you must set transaction metadata like this
 	var atp10Metadata Atp10Metadata
@@ -85,7 +87,11 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
 	// Build asset operation
 	var reqDataIssue model.AssetIssueOperation
 	reqDataIssue.Init()
-	reqDataIssue.SetAmount(nowSupply)
+	nowSupplyInt64, err := strconv.ParseInt(nowSupply, 10, 64)
+	if err != nil {
+		t.Log("nowSupply is error:", err)
+	}
+	reqDataIssue.SetAmount(nowSupplyInt64)
 	reqDataIssue.SetCode(code)
 	reqDataIssue.SetSourceAddress(issuerAddresss)
 	reqDataIssue.SetMetadata(metadata)
@@ -120,24 +126,26 @@ func Test_issueUnlimitedAtp10Token(t *testing.T) {
  */
 func Test_issuelimitedAtp10Token(t *testing.T) {
 	// The account private key to issue atp1.0 token
-	var issuerPrivateKey string = "privbtYzJ6miiFktK9BsDAMRNd3J4eKkuszfXqJ2huQ2h8DGUnRs9nuq"
+	var issuerPrivateKey string = "privbvCDPhjNmXdZD2p6RWfXhTC3qzpn8REtZtPSu64mMQDMxAJ3f1hu"
 	// The account address to send this transaction
-	var issuerAddresss string = "buQVU86Jm4FeRW4JcQTD9Rx9NkUkHikYGp6z"
+	var issuerAddresss string = "buQtjhgK9SakQPYGzoZ3iHodfRvd8qTGoaYd"
 
 	// The apt token version
 	var version string = "1.0"
 	// The token code
-	var code string = "TXT"
+	var code string = "code"
 	// The token name
-	var name string = "TXT"
+	var name string = "CODE"
 	// The apt token icon
 	var icon string = ""
-	// The token total supply number
-	var totalSupply int64 = 0
+	// The token total supply number, which includes the decimals.
+	// If decimals is 1 and you plan to issue 1000 tokens, the totalSupply must be 1000 * 10 ^ 1, like below.
+	var totalSupply string = common.UnitWithDecimals("1000", 1)
 	// The token now supply number
-	var nowSupply int64 = 1000000000
+	// If decimals is 1 and you want to issue 10 tokens now, the nowSupply must be 10 * 10 ^ 1, like below.
+	var nowSupply string = common.UnitWithDecimals("10", 1)
 	// The token decimals
-	var decimals int64 = 0
+	var decimals int64 = 8
 	// The token description
 	var description string = "test unlimited issuance of apt1.0 token"
 	// The operation notes
@@ -147,7 +155,7 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 	// Set up the maximum cost 0.01BU
 	var feeLimit int64 = 5003000000
 	// Transaction initiation account's Nonce + 1
-	var nonce int64 = 10
+	var nonce int64 = 6
 
 	// If this is a atp 1.0 token, you must set transaction metadata like this
 	var atp10Metadata Atp10Metadata
@@ -155,7 +163,11 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 	atp10Metadata.Code = code
 	atp10Metadata.Name = name
 	atp10Metadata.Decimals = decimals
-	atp10Metadata.TotalSupply = totalSupply
+	totalSupplyInt64, err := strconv.ParseInt(totalSupply, 10, 64)
+	if err != nil {
+		t.Log("totalSupply is error:", err)
+	}
+	atp10Metadata.TotalSupply = totalSupplyInt64
 	atp10Metadata.Description = description
 	atp10Metadata.Icon = icon
 	atp10MetadataJson, err := json.Marshal(atp10Metadata)
@@ -165,7 +177,11 @@ func Test_issuelimitedAtp10Token(t *testing.T) {
 	// Build asset operation
 	var reqDataIssue model.AssetIssueOperation
 	reqDataIssue.Init()
-	reqDataIssue.SetAmount(nowSupply)
+	nowSupplyInt64, err := strconv.ParseInt(nowSupply, 10, 64)
+	if err != nil {
+		t.Log("nowSupply is error:", err)
+	}
+	reqDataIssue.SetAmount(nowSupplyInt64)
 	reqDataIssue.SetCode(code)
 	reqDataIssue.SetSourceAddress(issuerAddresss)
 	reqDataIssue.SetMetadata(metadata)
@@ -217,7 +233,7 @@ func Test_sendAtp10Token(t *testing.T) {
 	// Set up the maximum cost 0.01BU
 	var feeLimit int64 = 1000000
 	// Transaction initiation account's Nonce + 1
-	var nonce int64 = 27
+	var nonce int64 = 3
 
 	var operations []model.BaseOperation
 	//  Check whether the destination account is activated
