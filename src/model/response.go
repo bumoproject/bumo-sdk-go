@@ -696,8 +696,8 @@ type Ctp10TokenCallResult struct {
 	QueryRets []QueryRet `json:"query_rets"`
 }
 type QueryRet struct {
-	Result Ctp10TokenResult `json:"result"`
-	Error  Error            `json:"error"`
+	Result interface{} `json:"result"`
+	Error  Error       `json:"error"`
 }
 type Ctp10TokenResult struct {
 	Type  string `json:"type"`
