@@ -50,6 +50,9 @@ func TimeoutDialer(cTimeout time.Duration, rwTimeout time.Duration) func(net, ad
 //http get
 func GetRequest(get string, str string) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
+	if ins == nil {
+		return nil, exception.GetSDKRes(exception.SDK_NOT_INIT)
+	}
 	connectTimeout := time.Duration(ins.ConnectTimeout) * time.Second
 	readWriteTimeout := time.Duration(ins.ReadWriteTimeout) * time.Second
 	buf.WriteString(ins.Url)
@@ -122,7 +125,7 @@ func GetRequestJson(reqData model.TransactionSubmitRequests) ([]byte, exception.
 	return requestJson, exception.GetSDKRes(exception.SUCCESS)
 }
 
-//获取最新fees
+//Get latest fees
 func GetLatestFees() (int64, int64, exception.SDKResponse) {
 	get := "/getLedger?with_fee=true"
 	response, SDKRes := GetRequest(get, "")
