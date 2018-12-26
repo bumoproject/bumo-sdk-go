@@ -364,7 +364,6 @@ func Test_Account_GetMetadata(t *testing.T) {
 		t.Errorf(resData.ErrorDesc)
 	} else {
 		data, _ := json.Marshal(resData.Result.Metadatas[0].Value)
-
 		t.Log("Metadatas:", string(data))
 		t.Log("Test_Account_GetMetadata succeed", resData.Result)
 	}
