@@ -59,51 +59,58 @@ func GetRequest(get string, str string) (*http.Response, exception.SDKResponse) 
 	buf.WriteString(get)
 	buf.WriteString(url.PathEscape(str))
 	strUrl := buf.String()
+	client := &http.Client{}
 	if connectTimeout != 0 || readWriteTimeout != 0 {
-		client := &http.Client{
+		client = &http.Client{
 			Transport: &http.Transport{
 				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
 				Dial:            TimeoutDialer(connectTimeout, readWriteTimeout),
 			},
 		}
-		newRequest, err := http.NewRequest("GET", strUrl, nil)
-		if err != nil {
-			return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
-		}
-		response, err := client.Do(newRequest)
-		if err != nil {
-			return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
-		}
-		return response, exception.GetSDKRes(exception.SUCCESS)
 	} else {
-		client := &http.Client{}
-		newRequest, err := http.NewRequest("GET", strUrl, nil)
-		if err != nil {
-			return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
-		}
-		response, err := client.Do(newRequest)
-		if err != nil {
-			return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
-		}
-		return response, exception.GetSDKRes(exception.SUCCESS)
+		client = &http.Client{}
 	}
-
+	newRequest, err := http.NewRequest("GET", strUrl, nil)
+	if err != nil {
+		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+	}
+	response, err := client.Do(newRequest)
+	if err != nil {
+		return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+	}
+	return response, exception.GetSDKRes(exception.SUCCESS)
 }
 
 //http post
 func PostRequest(post string, data []byte) (*http.Response, exception.SDKResponse) {
 	var buf bytes.Buffer
+	if ins == nil {
+		return nil, exception.GetSDKRes(exception.SDK_NOT_INIT)
+	}
+	connectTimeout := time.Duration(ins.ConnectTimeout) * time.Second
+	readWriteTimeout := time.Duration(ins.ReadWriteTimeout) * time.Second
 	buf.WriteString(ins.Url)
 	buf.WriteString(post)
 	strUrl := buf.String()
 	client := &http.Client{}
+
+	if connectTimeout != 0 || readWriteTimeout != 0 {
+		client = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+				Dial:            TimeoutDialer(connectTimeout, readWriteTimeout),
+			},
+		}
+	} else {
+		client = &http.Client{}
+	}
 	newRequest, err := http.NewRequest("POST", strUrl, bytes.NewReader(data))
 	if err != nil {
 		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
 	}
 	response, err := client.Do(newRequest)
 	if err != nil {
-		return nil, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
+		return response, exception.GetSDKRes(exception.CONNECTNETWORK_ERROR)
 	}
 	return response, exception.GetSDKRes(exception.SUCCESS)
 }

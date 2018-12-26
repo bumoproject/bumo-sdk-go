@@ -3,7 +3,6 @@ package sdk_test
 
 import (
 	"encoding/json"
-
 	"testing"
 
 	"github.com/bumoproject/bumo-sdk-go/src/model"
@@ -15,8 +14,8 @@ var testSdk sdk.Sdk
 //init
 func Test_Init(t *testing.T) {
 	var reqData model.SDKInitRequest
-	reqData.SetUrl("http://127.0.0.1:36002")
-	reqData.SetChainId(1)
+	reqData.SetUrl("http://seed1.bumotest.io:26002")
+	reqData.SetChainId(0)
 	resData := testSdk.Init(reqData)
 	if resData.ErrorCode != 0 {
 		t.Errorf(resData.ErrorDesc)
@@ -466,112 +465,5 @@ func Test_Contract_GetAddress(t *testing.T) {
 		t.Errorf(resData.ErrorDesc)
 	} else {
 		t.Log("Test_Contract_GetAddress succeed", resData.Result.ContractAddresInfos)
-	}
-}
-
-//ctp10token allowance
-func Test_Ctp10Token_Allowance(t *testing.T) {
-	var reqData model.Ctp10TokenAllowanceRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	var spender string = "buQW5p6gaCd331NerjxhD1cAHpmSGwxrt6e6"
-	reqData.SetSpender(spender)
-	var tokenOwner string = "buQnc3AGCo6ycWJCce516MDbPHKjK7ywwkuo"
-	reqData.SetTokenOwner(tokenOwner)
-	resData := testSdk.Token.Ctp10Token.Allowance(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Allowance:", resData.Result.Allowance)
-		t.Log("Test_Ctp10Token_Allowance succeed", resData.Result)
-	}
-}
-
-//get ctp10token info
-func Test_Ctp10Token_GetInfo(t *testing.T) {
-	var reqData model.Ctp10TokenGetInfoRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetInfo(reqData)
-	if resData.ErrorCode != 0 {
-		t.Log(resData)
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		data, _ := json.Marshal(resData.Result)
-		t.Log("info:", string(data))
-		t.Log("Test_Ctp10Token_GetInfo succeed", resData.Result)
-	}
-}
-
-//get ctp10token name
-func Test_Ctp10Token_GetName(t *testing.T) {
-	var reqData model.Ctp10TokenGetNameRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetName(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Name:", resData.Result.Name)
-		t.Log("Test_Ctp10Token_GetName succeed", resData.Result)
-	}
-}
-
-//get ctp10token symbol
-func Test_Ctp10Token_GetSymbol(t *testing.T) {
-	var reqData model.Ctp10TokenGetSymbolRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetSymbol(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Symbol:", resData.Result.Symbol)
-		t.Log("Test_Ctp10Token_GetSymbol succeed", resData.Result)
-	}
-}
-
-//get ctp10token decimals
-func Test_Ctp10Token_GetDecimals(t *testing.T) {
-	var reqData model.Ctp10TokenGetDecimalsRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetDecimals(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Decimals:", resData.Result.Decimals)
-		t.Log("Test_Ctp10Token_GetDecimals succeed", resData.Result)
-	}
-}
-
-//get ctp10token totalsupply
-func Test_Ctp10Token_GetTotalSupply(t *testing.T) {
-	var reqData model.Ctp10TokenGetTotalSupplyRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	resData := testSdk.Token.Ctp10Token.GetTotalSupply(reqData)
-	if resData.ErrorCode != 0 {
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("TotalSupply:", resData.Result.TotalSupply)
-		t.Log("Test_Ctp10Token_GetTotalSupply succeed", resData.Result)
-	}
-}
-
-//get ctp10token balance
-func Test_Ctp10Token_GetBalance(t *testing.T) {
-	var reqData model.Ctp10TokenGetBalanceRequest
-	var contractAddress string = "buQXoNR24p2pPqnXPyiDprmTWsU4SYLtBNCG"
-	reqData.SetContractAddress(contractAddress)
-	var tokenOwner string = "buQW5p6gaCd331NerjxhD1cAHpmSGwxrt6e6"
-	reqData.SetTokenOwner(tokenOwner)
-	resData := testSdk.Token.Ctp10Token.GetBalance(reqData)
-	if resData.ErrorCode != 0 {
-		t.Log(resData)
-		t.Errorf(resData.ErrorDesc)
-	} else {
-		t.Log("Balance:", resData.Result.Balance)
-		t.Log("Test_Ctp10Token_GetBalance succeed", resData.Result)
 	}
 }
