@@ -31,7 +31,7 @@ func Create() (publicKey string, privateKey string, address string, err error) {
 		return "", "", "", err
 	}
 
-	dePublic, dePriv, err := generateKey([]byte(ranstr))
+	dePublic, dePriv, err := GenerateKey([]byte(ranstr))
 	if err != nil {
 		return "", "", "", err
 	}
@@ -66,7 +66,7 @@ func GetEncPublicKey(privateKey string) (publicKey string, err error) {
 		return "", err
 	}
 
-	PublicKey, _, err := generateKey((*PrivateKey)[:32])
+	PublicKey, _, err := GenerateKey((*PrivateKey)[:32])
 	if err != nil {
 		return "", err
 	}
@@ -200,7 +200,7 @@ func CheckAddress(Saddress string) bool {
 }
 
 //Generate Key
-func generateKey(ranbuf []byte) (*[DePublicKeySize]byte, *[DePrivateKeySize]byte, error) {
+func GenerateKey(ranbuf []byte) (*[DePublicKeySize]byte, *[DePrivateKeySize]byte, error) {
 	var publicKey [DePublicKeySize]byte
 	var privateKey [DePrivateKeySize]byte
 	ranBytes := make([]byte, 32)
@@ -339,7 +339,7 @@ func DecodePrivateKey(privateKey string) (decodePrivateKey *[DePrivateKeySize]by
 	if err != nil {
 		return nil, err
 	}
-	_, decodePrivateKey, err = generateKey(ranbuf[4:36])
+	_, decodePrivateKey, err = GenerateKey(ranbuf[4:36])
 	if err != nil {
 		return nil, err
 	}
