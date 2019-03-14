@@ -59,7 +59,7 @@
 ### 包引用
 所依赖的golang包在src文件夹中寻找，依赖的golang包如下：
 
-```
+```golang
 	//获取包
 	go get github.com/bumoproject/bumo-sdk-go
 ```
@@ -91,7 +91,7 @@ Ctp10Token服务： 提供合约资产相关的有效性校验与查询接口
 
 例如：Account.GetInfo()的入参成员是address，那么AccountGetInfoRequest的结构如下：
 
-```
+```golang
 type AccountGetInfoRequest struct {
 	address string
 }
@@ -102,7 +102,7 @@ type AccountGetInfoRequest struct {
 
 例如Account.GetInfo()的结构体名是AccountGetInfoResponse：
 
-```
+```golang
 type AccountGetInfoResponse struct {
 	ErrorCode int
 	ErrorDesc string
@@ -118,7 +118,7 @@ type AccountGetInfoResponse struct {
 (3) Result: 返回结果的结构体，其中结构体的名称，格式是[类名][方法名]Result。
 例如Account.GetNonce()的结构体名是AccountGetNonceResult：
 
-```
+```golang
 type AccountGetNonceResult struct {
 	Nonce int64
 }
@@ -132,7 +132,7 @@ type AccountGetNonceResult struct {
 ### 包导入
 >导入使用的包
 
-```
+```golang
 import (
 
 	"github.com/bumoproject/bumo-sdk-go/src/model"
@@ -143,12 +143,12 @@ import (
 ### 生成SDK实例
 >初始化Sdk结构体
 
-```
+```golang
 var testSdk sdk.Sdk
 ```
 >调用SDK的接口Init
 
-```
+```golang
 url := "http://seed1.bumotest.io:26002"
 var reqData model.SDKInitRequest
 reqData.SetUrl(url)
@@ -157,13 +157,13 @@ resData := testSdk.Init(reqData)
 ### 生成公私钥地址
 >通过调用Account的Create生成账户，例如：
 
-```
+```golang
 resData := testSdk.Account.Create()
 ```
 ### 有效性校验
 此接口用于校验信息的有效性的，直接调用相应的接口即可，比如，校验账户地址有效性，调用如下：
 
-```
+```golang
 //初始化传入参数
 var reqData model.AccountCheckValidRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
@@ -174,7 +174,7 @@ resData := testSdk.Account.CheckValid(reqData)
 ### 查询
 调用相应的接口，例如：查询账户信息
 
-```
+```golang
 //初始化传入参数
 var reqData model.AccountGetInfoRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
@@ -190,7 +190,7 @@ resData := testSdk.Account.GetInfo(reqData)
 
 开发者可自己维护各个账户nonce，在提交完一个交易后，自动递增1，这样可以在短时间内发送多笔交易，否则，必须等上一个交易执行完成后，账户的nonce值才会加1。接口调用如下：
 
-```
+```golang
 // 初始化请求参数
 var reqData model.AccountGetNonceRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
@@ -203,7 +203,7 @@ resData := testSdk.Account.GetNonce(reqData)
 
 > 这里的操作是指在交易中做的一些动作。 例如：构建发送BU操作BUSendOperation，调用如下：
 
-```
+```golang
 var buSendOperation model.BUSendOperation
 buSendOperation.Init()
 var amount int64 = 100
@@ -217,7 +217,7 @@ buSendOperation.SetDestAddress(address)
 > 该接口用于生成交易Blob串，接口调用如下：
 > 注意：gasPrice和feeLimit的单位是MO，且 1 BU = 10^8 MO
 
-```
+```golang
 //初始化传入参数
 var reqDataBlob model.TransactionBuildBlobRequest
 reqDataBlob.SetSourceAddress(surceAddress)
@@ -233,7 +233,7 @@ resDataBlob := testSdk.Transaction.BuildBlob(reqDataBlob)
 
 > 该接口用于交易发起者使用私钥对交易进行签名。接口调用如下：
 
-```
+```golang
 //初始化传入参数
 PrivateKey := []string{"privbUPxs6QGkJaNdgWS2hisny6ytx1g833cD7V9C3YET9mJ25wdcq6h"}
 var reqData model.TransactionSignRequest
@@ -246,7 +246,7 @@ resDataSign := testSdk.Transaction.Sign(reqData)
 
 > 该接口用于向BU区块链发送交易，触发交易的执行。接口调用如下：
 
-```
+```golang
 //初始化传入参数
 var reqData model.TransactionSubmitRequest
 reqData.SetBlob(resDataBlob.Result.Blob)
@@ -287,7 +287,7 @@ SYSTEM_ERROR |20000	 |System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountCheckValidRequest
 address := "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
 reqData.SetAddress(address)
@@ -315,7 +315,7 @@ Address	 |string	 |地址
 
 > 示例
 
-```
+```golang
 resData := testSdk.Account.Create()
 if resData.ErrorCode == 0 {
 	fmt.Println("Address:",resData.Result.Address)
@@ -384,7 +384,7 @@ SYSTEM_ERROR |20000	 |System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountGetInfoRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
 reqData.SetAddress(address)
@@ -425,7 +425,7 @@ SYSTEM_ERROR |20000	 |System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountGetNonceRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
 reqData.SetAddress(address)
@@ -468,7 +468,7 @@ SYSTEM_ERROR |20000	 |System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountGetBalanceRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
 reqData.SetAddress(address)
@@ -525,7 +525,7 @@ SYSTEM_ERROR	 |	20000	 |	System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountGetAssetsRequest
 var address string = "buQtfFxpQP9JCFgmu4WBojBbEnVyQGaJDgGn"
 reqData.SetAddress(address)
@@ -578,7 +578,7 @@ SYSTEM_ERROR	 |	 20000	|	 System error
 
 > 示例
 
-```
+```golang
 var reqData model.AccountGetMetadataRequest
 var address string = "buQemmMwmRQY1JkcU7w3nhruoX5N3j6C29uo"
 reqData.SetAddress(address)
@@ -631,7 +631,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 var reqData model.AssetGetInfoRequest
 var address string = "buQemmMwmRQY1JkcU7w3nhruoX5N3j6C29uo"
 reqData.SetAddress(address)
@@ -684,7 +684,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 var reqData model.ContractGetInfoRequest
 var address string = "buQfnVYgXuMo3rvCEpKA6SfRrDpaz8D8A9Ea"
 reqData.SetAddress(address)
@@ -920,7 +920,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 var reqDataOperation model.BUSendOperation
 reqDataOperation.Init()
 var amount int64 = 100
@@ -1025,7 +1025,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 var reqDataOperation model.BUSendOperation
 reqDataOperation.Init()
 var amount int64 = 100
@@ -1093,7 +1093,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 PrivateKey := []string{"privbUPxs6QGkJaNdgWS2hisny6ytx1g833cD7V9C3YET9mJ25wdcq6h"}
 var reqData model.TransactionSignRequest
 reqData.SetBlob(resDataBlob.Result.Blob)
@@ -1135,7 +1135,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 var reqData model.TransactionSubmitRequest
 reqData.SetBlob(resDataBlob.Result.Blob)
 reqData.SetSignatures(resDataSign.Result.Signatures)
@@ -1293,7 +1293,7 @@ Data	|	[]string	|	日志内容
 
 > 示例
 
-```
+```golang
 var reqData model.TransactionGetInfoRequest
 var hash string = "cd33ad1e033d6dfe3db3a1d29a55e190935d9d1ff40a138d777e9406ebe0fdb1"
 reqData.SetHash(hash)
@@ -1333,7 +1333,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.GetNumber()
 if resData.ErrorCode == 0 {
 	fmt.Println("BlockNumber:", resData.Result.BlockNumber)
@@ -1367,7 +1367,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.CheckStatus()
 if resData.ErrorCode == 0 {
 	fmt.Println("IsSynchronous:", resData.Result.IsSynchronous)
@@ -1409,7 +1409,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 var reqData model.BlockGetTransactionRequest
 var blockNumber int64 = 581283
 reqData.SetBlockNumber(blockNumber)
@@ -1456,7 +1456,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 var reqData model.BlockGetInfoRequest
 var blockNumber int64 = 581283
 reqData.SetBlockNumber(blockNumber)
@@ -1496,7 +1496,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.GetLatest()
 if resData.ErrorCode == 0 {
 	data, _ := json.Marshal(resData.Result.Header)
@@ -1544,7 +1544,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 var reqData model.BlockGetValidatorsRequest
 var blockNumber int64 = 581283
 reqData.SetBlockNumber(blockNumber)
@@ -1583,7 +1583,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.GetLatestValidators()
 if resData.ErrorCode == 0 {
 	data, _ := json.Marshal(resData.Result.Validators)
@@ -1603,7 +1603,7 @@ if resData.ErrorCode == 0 {
 
 > 请求参数
 
-参数	|	类型	|	描述
+|参数	|	类型	|	描述
 -----------|------------|----------------
 blockNumber	|	int64	|	必填，待查询的区块高度
 
@@ -1631,7 +1631,7 @@ CONNECTNETWORK_ERROR	|	11007	|	Fail to Connect network
 SYSTEM_ERROR	|	20000	|	System error
 > 示例
 
-```
+```golang
 var reqData model.BlockGetRewardRequest
 var blockNumber int64 = 581283
 reqData.SetBlockNumber(blockNumber)
@@ -1653,10 +1653,10 @@ GetLatestReward() model.BlockGetLatestRewardResponse
 
 > 响应数据
 
-参数	|	类型	|	描述
+参数|类型	|	描述
 -----------|------------|----------------
-BlockReward	|	int64	|	区块奖励数
-ValidatorsReward	|	[] [ValidatorReward](#validatorreward)|	验证节点奖励情况
+BlockReward|int64|区块奖励数
+ValidatorsReward|[] [ValidatorReward](#validatorreward)|验证节点奖励情况
 
 
 > 错误码
@@ -1668,7 +1668,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.GetLatestReward()
 if resData.ErrorCode == 0 {
 	fmt.Println("ValidatorsReward:", resData.Result.ValidatorsReward)
@@ -1714,7 +1714,7 @@ SYSTEM_ERROR	|	20000	|	System error	|
 
 > 示例
 
-```
+```golang
 var reqData model.BlockGetFeesRequest
 var blockNumber int64 = 581283
 reqData.SetBlockNumber(blockNumber)
@@ -1751,7 +1751,7 @@ SYSTEM_ERROR	|	20000	|	System error
 
 > 示例
 
-```
+```golang
 resData := testSdk.Block.GetLatestFees()
 if resData.ErrorCode == 0 {
 	data, _ := json.Marshal(resData.Result.Fees)
