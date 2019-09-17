@@ -502,7 +502,7 @@ type BlockGetValidatorsResponse struct {
 	Result    GetValidatorsResult `json:"result"`
 }
 type GetValidatorsResult struct {
-	Validators []Validator `json:"validators"`
+	Validators []string `json:"validators"`
 }
 type Validator struct {
 	Address          string `json:"address"`
@@ -529,11 +529,21 @@ type WebGetRewardResult struct {
 type BlockGetRewardResponse struct {
 	ErrorCode int             `json:"error_code"`
 	ErrorDesc string          `json:"error_desc"`
-	Result    GetRewardResult `json:"result"`
+	Result    BlockGetRewardResult `json:"result"`
 }
+type BlockGetRewardResult struct {
+	Validators      []Rewards  `json:"validators"`
+	Kols []Rewards `json:"kols"`
+}
+
+type Rewards struct {
+	Address string `json:"address"`
+	Reward []interface{} `json:"reward"`
+}
+
 type GetRewardResult struct {
-	BlockReward      int64
-	ValidatorsReward []ValidatorReward
+	Validators map[string][]interface{} `json:"validators"`
+	Kols map[string][]interface{} `json:"kols"`
 }
 
 //GetLatestReward
@@ -841,4 +851,12 @@ type CallContractRequest struct {
 	GasPrice        int64  `json:"gas_price"`
 	OptType         int64  `json:"opt_type"`
 	SourceAddress   string `json:"source_address"`
+}
+
+type RewardsGetInput struct {
+	Method        string `json:"method"`
+}
+
+type RewardsResult struct {
+	Rewards    GetRewardResult `json:"rewards"`
 }
