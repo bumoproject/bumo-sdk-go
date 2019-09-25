@@ -272,8 +272,8 @@ resDataSubmit := testSdk.Transaction.Submit(reqData)
    INVALID_LOG_DATA_ERROR|11046|The length of one piece of log data must be between 1 and 1024
    INVALID_CONTRACT_TYPE_ERROR|11047|Type must be equal or bigger than 0 
    INVALID_NONCE_ERROR|11048|Nonce must be between 1 and max(int64)
-   INVALID_ GASPRICE_ERROR|11049|GasPrice must be between 1000 and max(int64)
-   INVALID_FEELIMIT_ERROR|11050|FeeLimit must be between 1 and max(int64)
+   INVALID_ GASPRICE_ERROR|11049|GasPrice must be between 0 and max(int64)
+   INVALID_FEELIMIT_ERROR|11050|FeeLimit must be between 0 and max(int64)
    OPERATIONS_EMPTY_ERROR|11051|Operations cannot be empty
    INVALID_CEILLEDGERSEQ_ERROR|11052|CeilLedgerSeq must be equal to or greater than 0
    OPERATIONS_ONE_ERROR|11053|One of the operations cannot be resolved
@@ -1995,8 +1995,8 @@ INVALID_LOG_TOPIC_ERROR|11045|The length of a log topic must be between 1 and 12
 INVALID_LOG_DATA_ERROR|11046|The length of one piece of log data must be between 1 and 1024
 INVALID_CONTRACT_TYPE_ERROR|11047|Invalid contract type
 INVALID_NONCE_ERROR|11048|Nonce must be between 1 and max(int64)
-INVALID_GASPRICE_ERROR|11049|GasPrice must be between 1000 and max(int64)
-INVALID_FEELIMIT_ERROR|11050|FeeLimit must be between 1 and max(int64)
+INVALID_GASPRICE_ERROR|11049|GasPrice must be between 0 and max(int64)
+INVALID_FEELIMIT_ERROR|11050|FeeLimit must be between 0 and max(int64)
 OPERATIONS_EMPTY_ERROR|11051|Operations cannot be empty
 INVALID_CEILLEDGERSEQ_ERROR|11052|CeilLedgerSeq must be equal to or greater than 0
 OPERATIONS_ONE_ERROR|11053|One of the operations cannot be resolved

@@ -317,6 +317,50 @@ func Test_Asset_Issue(t *testing.T) {
 	}
 }
 
+//Build blob
+func Test_Transaction_BuildBlob(t *testing.T) {
+	// Init variable
+	// The account address to send this transaction
+	var senderAddress string = "buQXmYrmqt6ohcKtLFKgWFSZ5CjYKaSzaMjT"
+	// The account to receive asset
+	var destAddress string = "buQhapCK83xPPdjQeDuBLJtFNvXYZEKb6tKB"
+	// Asset code
+	var assetCode string = "TST"
+	// The accout address of issuing asset
+	var assetIssuer string = "buQcGP2a1PY45dauMfhk9QsFbn7a6BKKAM9x"
+	// The asset amount to be sent
+	var amount int64 = 1000000000000000
+	// The fixed write 1000L, the unit is MO
+	var gasPrice int64 = 0
+	// Set up the maximum cost 0.01BU
+	var feeLimit int64 = 0
+	// Transaction initiation account's nonce + 1
+	var nonce int64 = 2
+
+	//Operation
+	var reqDataOperation model.AssetSendOperation
+	reqDataOperation.Init()
+	reqDataOperation.SetAmount(amount)
+	reqDataOperation.SetCode(assetCode)
+	reqDataOperation.SetDestAddress(destAddress)
+	reqDataOperation.SetIssuer(assetIssuer)
+
+	var reqDataBlob model.TransactionBuildBlobRequest
+	reqDataBlob.SetSourceAddress(senderAddress)
+	reqDataBlob.SetFeeLimit(feeLimit)
+	reqDataBlob.SetGasPrice(gasPrice)
+	reqDataBlob.SetNonce(nonce)
+	reqDataBlob.SetOperation(reqDataOperation)
+	//reqDataBlob.SetMetadata("abc")
+
+	resDataBlob := testSdk.Transaction.BuildBlob(reqDataBlob)
+	if resDataBlob.ErrorCode != 0 {
+		t.Log("errorDesc: ", resDataBlob.ErrorCode, resDataBlob.ErrorDesc, "")
+	} else {
+		t.Log("blob: " , resDataBlob.Result.Blob)
+	}
+}
+
 //Asset Send
 func Test_Asset_Send(t *testing.T) {
 	// Init variable

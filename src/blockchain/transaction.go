@@ -40,13 +40,13 @@ func (transaction *TransactionOperation) BuildBlob(reqData model.TransactionBuil
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-	if reqData.GetGasPrice() < 1000 {
+	if reqData.GetGasPrice() < 0 {
 		SDKRes := exception.GetSDKRes(exception.INVALID_GASPRICE_ERROR)
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-	if reqData.GetFeeLimit() < 1 {
+	if reqData.GetFeeLimit() < 0 {
 		SDKRes := exception.GetSDKRes(exception.INVALID_FEELIMIT_ERROR)
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
