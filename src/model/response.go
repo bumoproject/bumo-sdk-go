@@ -376,6 +376,7 @@ type GetTransactionInfoResult struct {
 type Transactioninfo struct {
 	ActualFee   int64       `json:"actual_fee"`
 	CloseTime   int64       `json:"close_time"`
+	ContractTxHashes []string `json:"contract_tx_hashes"`
 	ErrorCode   int64       `json:"error_code"`
 	ErrorDesc   string      `json:"error_desc"`
 	Hash        string      `json:"hash"`
