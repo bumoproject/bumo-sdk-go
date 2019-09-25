@@ -36,4 +36,4 @@ import (
 ## Example project
 Bumo Go SDK provides rich examples for developers' reference
 
-[Sample document entry](doc/bumo-sdk-go.md "")
+[Sample document entry](doc/SDK.md "")
