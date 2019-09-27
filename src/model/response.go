@@ -282,7 +282,6 @@ type TransactionJson struct {
 	Nonce         int64              `json:"nonce"`
 	CeilLedgerSeq int64              `json:"ceil_ledger_seq"`
 	Operations    []OperationEvaluat `json:"operations"`
-	ChainId       int64              `json:"chain_id"`
 }
 type OperationEvaluat struct {
 	Type          protocol.Operation_Type `protobuf:"varint,1,opt,name=type,enum=protocol.Operation_Type" json:"type,omitempty"`
@@ -392,7 +391,6 @@ type Transaction struct {
 	FeeLimit      int64       `json:"fee_limit"`
 	Metadata      string      `json:"metadata"`
 	Operations    []Operation `json:"operations"`
-	ChainId       int64       `json:"chain_id"`
 }
 type Operation struct {
 	SourceAddress string        `json:"source_address"`
@@ -707,8 +705,8 @@ type Ctp10TokenCallResult struct {
 	QueryRets []QueryRet `json:"query_rets"`
 }
 type QueryRet struct {
-	Result interface{} `json:"result"`
-	Error  Error       `json:"error"`
+	Result Ctp10TokenResult `json:"result"`
+	Error  Error            `json:"error"`
 }
 type Ctp10TokenResult struct {
 	Type  string `json:"type"`

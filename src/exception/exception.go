@@ -75,7 +75,6 @@ const (
 	THE_QUERY_FAILED
 	QUERY_NO_RESULTS
 	OPERATION_NOT_INIT
-	SDK_NOT_INIT
 )
 
 var errm = map[int]string{
@@ -145,7 +144,6 @@ var errm = map[int]string{
 	THE_QUERY_FAILED:       "The query failed.",
 	QUERY_NO_RESULTS:       "Query no results",
 	OPERATION_NOT_INIT:     "Operation is not initialized",
-	SDK_NOT_INIT:           "Sdk is not initialized",
 }
 
 //GetSDKRes

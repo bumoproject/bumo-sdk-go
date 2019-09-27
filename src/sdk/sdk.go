@@ -2,8 +2,6 @@
 package sdk
 
 import (
-	_ "sync"
-
 	"github.com/bumoproject/bumo-sdk-go/src/account"
 	"github.com/bumoproject/bumo-sdk-go/src/blockchain"
 	"github.com/bumoproject/bumo-sdk-go/src/common"
@@ -25,17 +23,12 @@ type Sdk struct {
 func (sdk *Sdk) Init(reqData model.SDKInitRequest) model.SDKInitResponse {
 	var resData model.SDKInitResponse
 	if reqData.GetUrl() == "" {
-		resData.ErrorCode = exception.URL_EMPTY_ERROR
+		resData.ErrorCode = exception.INVALID_BLOCKNUMBER_ERROR
 		resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
 		return resData
 	}
 	get := "/hello"
-	commonStruct := common.GetIns()
-	commonStruct.Url = reqData.GetUrl()
-	commonStruct.ConnectTimeout = reqData.GetConnectTimeout()
-	commonStruct.ReadWriteTimeout = reqData.GetReadWriteTimeout()
-	commonStruct.ChainId = reqData.GetChainId()
-	response, SDKRes := common.GetRequest(get, "")
+	response, SDKRes := common.GetRequest(reqData.GetUrl(), get, "")
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -47,25 +40,12 @@ func (sdk *Sdk) Init(reqData model.SDKInitRequest) model.SDKInitResponse {
 		resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
 		return resData
 	}
+	sdk.Account.Url = reqData.GetUrl()
+	sdk.Contract.Url = reqData.GetUrl()
+	sdk.Token.Asset.Url = reqData.GetUrl()
+	sdk.Transaction.Url = reqData.GetUrl()
+	sdk.Block.Url = reqData.GetUrl()
+	sdk.Token.Ctp10Token.Url = reqData.GetUrl()
 	resData.ErrorCode = exception.SUCCESS
 	return resData
 }
-
-//type configSdk struct {
-//	Account     account.AccountOperation
-//	Contract    contract.ContractOperation
-//	Transaction blockchain.TransactionOperation
-//	Block       blockchain.BlockOperation
-//	Token       token.TokenOperation
-//}
-
-//var insSdk *configSdk
-//var once sync.Once
-
-//func GetInsSdk(reqData model.SDKInitRequest) *configSdk {
-//	once.Do(func() {
-//		insSdk = &configSdk{}
-//		insSdk.Init(reqData)
-//	})
-//	return insSdk
-//}

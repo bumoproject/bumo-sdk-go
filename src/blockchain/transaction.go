@@ -17,6 +17,7 @@ import (
 )
 
 type TransactionOperation struct {
+	Url string
 }
 
 // build blob
@@ -59,7 +60,7 @@ func (transaction *TransactionOperation) BuildBlob(reqData model.TransactionBuil
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-	operations, SDKRes := common.GetOperations(operationsData, reqData.GetSourceAddress())
+	operations, SDKRes := common.GetOperations(operationsData, transaction.Url, reqData.GetSourceAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -101,6 +102,7 @@ func (transaction *TransactionOperation) BuildBlob(reqData model.TransactionBuil
 	var seq int64 = 0
 	if reqData.GetCeilLedgerSeq() > 0 {
 		var Block BlockOperation
+		Block.Url = transaction.Url
 		resDataNumber := Block.GetNumber()
 		seq = reqData.GetCeilLedgerSeq() + resDataNumber.Result.Header.BlockNumber
 	}
@@ -112,7 +114,6 @@ func (transaction *TransactionOperation) BuildBlob(reqData model.TransactionBuil
 		GasPrice:      reqData.GetGasPrice(),
 		Metadata:      []byte(reqData.GetMetadata()),
 		Operations:    operations,
-		ChainId:       common.GetChainId(),
 	}
 	data, err := proto.Marshal(&Transaction)
 	if err != nil {
@@ -166,7 +167,7 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 			return resData
 		}
 	}
-	operations, SDKRes := common.GetOperations(operationsData, reqData.GetSourceAddress())
+	operations, SDKRes := common.GetOperations(operationsData, transaction.Url, reqData.GetSourceAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -190,6 +191,7 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 	var seq int64 = 0
 	if reqData.GetCeilLedgerSeq() > 0 {
 		var Block BlockOperation
+		Block.Url = transaction.Url
 		resDataNumber := Block.GetNumber()
 		seq = reqData.GetCeilLedgerSeq() + resDataNumber.Result.Header.BlockNumber
 	}
@@ -202,7 +204,6 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 					Nonce:         reqData.GetNonce(),
 					CeilLedgerSeq: seq,
 					Operations:    Operations,
-					ChainId:       common.GetChainId(),
 				},
 				SignatureNumber: SignatureNumber,
 			},
@@ -215,8 +216,7 @@ func (transaction *TransactionOperation) EvaluateFee(reqData model.TransactionEv
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-
-	response, SDKRes := common.PostRequest("/testTransaction", requestJson)
+	response, SDKRes := common.PostRequest(transaction.Url, "/testTransaction", requestJson)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -360,14 +360,13 @@ func (transaction *TransactionOperation) Submit(reqData model.TransactionSubmitR
 			}
 		}
 	}
-
 	requestJson, SDKRes := common.GetRequestJson(reqDatas)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
 		return resData
 	}
-	response, SDKRes := common.PostRequest("/submitTransaction", requestJson)
+	response, SDKRes := common.PostRequest(transaction.Url, "/submitTransaction", requestJson)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -410,9 +409,8 @@ func (transaction *TransactionOperation) GetInfo(reqData model.TransactionGetInf
 		return resData
 
 	}
-
 	get := "/getTransactionHistory?hash="
-	response, SDKRes := common.GetRequest(get, reqData.GetHash())
+	response, SDKRes := common.GetRequest(transaction.Url, get, reqData.GetHash())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc

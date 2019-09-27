@@ -14,11 +14,13 @@ import (
 )
 
 type ContractOperation struct {
+	Url string
 }
 
 //Check Valid
 func (contract *ContractOperation) CheckValid(reqData model.ContractCheckValidRequest) model.ContractCheckValidResponse {
 	var Account account.AccountOperation
+	Account.Url = contract.Url
 	var reqDataAcc model.AccountGetInfoRequest
 	var resData model.ContractCheckValidResponse
 	resData.Result.IsValid = false
@@ -60,8 +62,7 @@ func (contract *ContractOperation) GetInfo(reqData model.ContractGetInfoRequest)
 		return resData
 	}
 	get := "/getAccount?address="
-
-	response, SDKRes := common.GetRequest(get, reqData.GetAddress())
+	response, SDKRes := common.GetRequest(contract.Url, get, reqData.GetAddress())
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = SDKRes.ErrorCode
 		resData.ErrorDesc = SDKRes.ErrorDesc
@@ -138,8 +139,7 @@ func (contract *ContractOperation) Call(reqData model.ContractCallRequest) model
 		resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
 		return resData
 	}
-
-	response, SDKRes := common.PostRequest("/callContract", reqDataByte)
+	response, SDKRes := common.PostRequest(contract.Url, "/callContract", reqDataByte)
 	if SDKRes.ErrorCode != 0 {
 		resData.ErrorCode = exception.SYSTEM_ERROR
 		resData.ErrorDesc = exception.GetErrDesc(resData.ErrorCode)
@@ -173,6 +173,7 @@ func (contract *ContractOperation) Call(reqData model.ContractCallRequest) model
 func (contract *ContractOperation) GetAddress(reqData model.ContractGetAddressRequest) model.ContractGetAddressResponse {
 	var resData model.ContractGetAddressResponse
 	var Transaction blockchain.TransactionOperation
+	Transaction.Url = contract.Url
 	var reqDataInfo model.TransactionGetInfoRequest
 	reqDataInfo.SetHash(reqData.GetHash())
 	resDataInfo := Transaction.GetInfo(reqDataInfo)
