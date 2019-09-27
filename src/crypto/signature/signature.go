@@ -6,7 +6,7 @@ import (
 	"errors"
 
 	"github.com/bumoproject/bumo-sdk-go/src/crypto/keypair"
-	"golang.org/x/crypto/ed25519"
+	"github.com/golang/crypto/ed25519"
 )
 
 const (
