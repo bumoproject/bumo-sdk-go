@@ -10,7 +10,7 @@ import (
 
 	"github.com/bumoproject/bumo-sdk-go/src/crypto/base58"
 	"github.com/myENA/secureRandom"
-	"github.com/golang/crypto/ed25519"
+	"golang.org/x/crypto/ed25519"
 )
 
 const (
