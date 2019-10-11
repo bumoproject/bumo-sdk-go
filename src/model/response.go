@@ -561,8 +561,8 @@ type BlockGetLatestRewardResponse struct {
 	Result    GetLatestRewardResult `json:"result"`
 }
 type GetLatestRewardResult struct {
-	BlockReward      int64
-	ValidatorsReward []ValidatorReward
+	Validators      []Rewards  `json:"validators"`
+	Kols []Rewards `json:"kols"`
 }
 type ValidatorReward struct {
 	Validator string
